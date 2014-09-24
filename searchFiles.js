@@ -147,6 +147,12 @@ define( function( require, exports ) {
 
 		};
 
+		this.isInPath = function( f ) {
+
+			return ( f.fullPath.search( this.input.value.replace(/ /gi, '(.)*') ) !== -1 );
+
+		};
+
 		this.search = function( isIn ) {
 
 			this.resetSearch();
@@ -185,11 +191,15 @@ define( function( require, exports ) {
 		this.handleKeyCode = function( e ) {
 
 			var key = e.keyCode,
+                self = this,
 				ref = {
-					13: function() {
+					39: function() {
 						if ( $( '.search-files-result.selected' ).length > 0 )
 							this.openFile( document.querySelector( '.search-files-result.selected' ).path )
 					}.bind( this ),
+					27: function() {
+        				self.removeSelectedRow();
+					},
 					40: function() {
 						if ( $( '.search-files-result.selected' ).length === 0 )
 							$( '#search-files-table .search-files-result:first-child' ).addClass( 'selected' );
@@ -204,11 +214,11 @@ define( function( require, exports ) {
 					}
 				};
 
-			if ( ref.hasOwnProperty( key ) ) {
-				ref[ key ]();
-			} else {
+      if (key == 13) {
 				this.removeSelectedRow();
-				this.search( this.isInName );
+				this.search( this.isInPath );
+			} else if ( ref.hasOwnProperty( key )) {
+				ref[ key ]();
 			}
 
 		};

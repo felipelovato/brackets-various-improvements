@@ -1,3 +1,5 @@
+- file search that allow you to find a file in your project using filter by path. 
+
 Various improvements
 =============================
 
