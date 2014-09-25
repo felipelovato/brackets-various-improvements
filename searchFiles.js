@@ -92,8 +92,13 @@ define( function( require, exports ) {
 		};
 
 		this.listProjectFiles = function() {
-
-			ProjectManager.getAllFiles().done( function( fileListResult ) {
+			var filter = function (file){
+				if (file._path.indexOf('node_modules') === -1) {
+					return true;
+				}
+				return false;
+			};
+			ProjectManager.getAllFiles(filter).done( function( fileListResult ) {
 				var fileListResultLength = fileListResult.length,
 					i,
 					dot,
@@ -123,8 +128,8 @@ define( function( require, exports ) {
 				row.innerHTML = '<td>' + res.name + '</td>';
 				row.innerHTML += '<td>' + res.path + '</td>';
 				row.path = res.path;
-				row.addEventListener( 'click', function() {
-					this.openFile( res.path )
+				row.addEventListener( 'click', function(e) {
+					this.openFile( e.target.parentNode.path )
 				}.bind( this ) );
 
 				this.searchFilesTable.appendChild( row );

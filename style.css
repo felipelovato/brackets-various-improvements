@@ -48,9 +48,13 @@
 .search-files-result:hover td{
     background-color: #e0f0fa!important;
     cursor:pointer;
+    color:#000;
 }
 .search-files-table_container{
   position:relative;
+}
+#search-files-table tr.search-files-result.selected td {
+  color:#000;
 }
 #no-find-file{
   position: absolute;
