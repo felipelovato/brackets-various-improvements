@@ -98,6 +98,7 @@ define( function( require, exports ) {
 				}
 				return false;
 			};
+
 			ProjectManager.getAllFiles(filter).done( function( fileListResult ) {
 				var fileListResultLength = fileListResult.length,
 					i,
@@ -153,24 +154,27 @@ define( function( require, exports ) {
 		};
 
 		this.isInPath = function( f ) {
-
-			return ( f.fullPath.search( this.input.value.replace(/ /gi, '(.)*') ) !== -1 );
+			var projectPath = ProjectManager.getProjectRoot()._path,
+					filePath = f.fullPath.replace(projectPath, ''),
+					searchQuery = this.input.value;
+					console.log(filePath);
+			return ( filePath.search( searchQuery.replace(/ /gi, '(.)*') ) !== -1 );
 
 		};
 
 		this.search = function( isIn ) {
 
 			this.resetSearch();
-
-			for ( var i = 0; i < this.projectFilesListLength; i += 1 ) {
-				if ( isIn.bind( this )( projectFilesList[ i ] ) ) {
-					this.results.push( {
-						name: projectFilesList[ i ].nameWithExtension,
-						path: projectFilesList[ i ].fullPath
-					} );
+			if (this.input.value) {
+				for ( var i = 0; i < this.projectFilesListLength; i += 1 ) {
+					if ( isIn.bind( this )( projectFilesList[ i ] ) ) {
+						this.results.push( {
+							name: projectFilesList[ i ].nameWithExtension,
+							path: projectFilesList[ i ].fullPath
+						} );
+					}
 				}
 			}
-
 			this.displayResults();
 
 		};
